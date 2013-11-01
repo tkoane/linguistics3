@@ -66,6 +66,14 @@ def unigram_map_entry(filename, top_words):
         try:
             i = top_words.index(token)
             output_list[i] += 1
-        except Error:
+        except ValueError:
             pass
     return output_list
+
+def main():
+    top_words = extract_top_words('data')
+    print unigram_map_entry('data/9354.txt', top_words)
+
+
+if __name__ == "__main__":
+    main()
