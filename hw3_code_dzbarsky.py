@@ -88,12 +88,12 @@ def get_mpqa_features(file, dictionary):
     tokens = load_file_tokens(file)
     l = [0, 0, 0]
     for token in tokens:
-        for (type, polar) in dict[token]:
-            if polar == 'positive':
+        for t in dict[token]:
+            if t[1] == 'positive':
                 l[0] += 1
-            elif polar == 'negative':
+            elif t[1] == 'negative':
                 l[1] += 1
-            elif polar == 'neutral':
+            elif t[1] == 'neutral':
                 l[2] += 1
     return l
 
@@ -101,20 +101,20 @@ def get_mpqa_features_wordtype(file, dictionary):
     tokens = load_file_tokens(file)
     l = [0, 0, 0, 0, 0, 0]
     for token in tokens:
-        for (type, polar) in dict[token]:
-            if type = 'strongsubj':
-                if polar == 'positive':
+        for t in dict[token]:
+            if t[0] == 'strongsubj':
+                if t[1] == 'positive':
                     l[0] += 1
-                elif polar == 'negative':
+                elif t[1] == 'negative':
                     l[1] += 1
-                elif polar == 'neutral':
+                elif t[1] == 'neutral':
                     l[2] += 1
-            if type = 'weaksubj':
-                if polar == 'positive':
+            if t[0] == 'weaksubj':
+                if t[1] == 'positive':
                     l[3] += 1
-                elif polar == 'negative':
+                elif t[1] == 'negative':
                     l[4] += 1
-                elif polar == 'neutral':
+                elif t[1] == 'neutral':
                     l[5] += 1
     return l
 
@@ -136,9 +136,11 @@ def get_geninq_features(filename, geninq_dict):
     return l
 
 def main():
-    #top_words = extract_top_words('data')
-    #print unigram_map_entry('data/9354.txt', top_words)
-    print get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')['mean']
+    #top_words = extract_top_words('/home1/c/cis530/hw3/data')
+    #print unigram_map_entry('/home1/c/cis530/hw3/data/6285515.txt', top_words)
+    dic = get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')
+    print get_mpqa_features('/home1/c/cis530/hw3/data/6285515.txt', dic)
+    #print get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')['mean']
     gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
     print gi_dict["make"]
     print gi_dict["malady"]
