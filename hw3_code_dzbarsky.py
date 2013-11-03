@@ -134,7 +134,8 @@ def get_geninq_lexicon(lexicon_path):
 def get_geninq_features(filename, geninq_dict):
     l = [0, 0, 0, 0]
     for token in load_file_tokens(filename):
-        l = [a + b for a, b in zip(l, geninq_dict[token])]
+        if token in geninq_dict:
+            l = [a + b for a, b in zip(l, geninq_dict[token])]
     return l
 
 def main():
