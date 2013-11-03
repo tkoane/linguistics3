@@ -70,6 +70,20 @@ def unigram_map_entry(filename, top_words):
             pass
     return output_list
 
+def get_mpqa_lexicon(lexicon_path):
+    words = dict()
+    for line in open(lexicon_path):
+      type = line[5:line.find(' ')]
+      line = line[line.find('word1'):]
+      word = line[6:line.find(' ')]
+      line = line[line.find('polarity'):]
+      polarity = line[9:line.find(' ')]
+      if word not in words:
+          words[word] = [(type, polarity)]
+      else:
+          words[word].append((type, polarity))
+    return words
+
 def get_mpqa_features(file, dictionary):
     tokens = load_file_tokens(file)
     l = [0, 0, 0]
@@ -105,9 +119,9 @@ def get_mpqa_features_wordtype(file, dictionary):
     return l
 
 def main():
-    top_words = extract_top_words('data')
-    print unigram_map_entry('data/9354.txt', top_words)
-
+    #top_words = extract_top_words('data')
+    #print unigram_map_entry('data/9354.txt', top_words)
+    print get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')['mean']
 
 if __name__ == "__main__":
     main()
