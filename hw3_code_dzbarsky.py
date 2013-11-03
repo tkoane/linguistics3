@@ -70,6 +70,40 @@ def unigram_map_entry(filename, top_words):
             pass
     return output_list
 
+def get_mpqa_features(file, dictionary):
+    tokens = load_file_tokens(file)
+    l = [0, 0, 0]
+    for token in tokens:
+        for (type, polar) in dict[token]:
+            if polar == 'positive':
+                l[0] += 1
+            elif polar == 'negative':
+                l[1] += 1
+            elif polar == 'neutral':
+                l[2] += 1
+    return l
+
+def get_mpqa_features_wordtype(file, dictionary):
+    tokens = load_file_tokens(file)
+    l = [0, 0, 0, 0, 0, 0]
+    for token in tokens:
+        for (type, polar) in dict[token]:
+            if type = 'strongsubj':
+                if polar == 'positive':
+                    l[0] += 1
+                elif polar == 'negative':
+                    l[1] += 1
+                elif polar == 'neutral':
+                    l[2] += 1
+            if type = 'weaksubj':
+                if polar == 'positive':
+                    l[3] += 1
+                elif polar == 'negative':
+                    l[4] += 1
+                elif polar == 'neutral':
+                    l[5] += 1
+    return l
+
 def main():
     top_words = extract_top_words('data')
     print unigram_map_entry('data/9354.txt', top_words)
