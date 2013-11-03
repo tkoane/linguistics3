@@ -84,6 +84,40 @@ def get_mpqa_lexicon(lexicon_path):
           words[word].append((type, polarity))
     return words
 
+def get_mpqa_features(file, dictionary):
+    tokens = load_file_tokens(file)
+    l = [0, 0, 0]
+    for token in tokens:
+        for (type, polar) in dict[token]:
+            if polar == 'positive':
+                l[0] += 1
+            elif polar == 'negative':
+                l[1] += 1
+            elif polar == 'neutral':
+                l[2] += 1
+    return l
+
+def get_mpqa_features_wordtype(file, dictionary):
+    tokens = load_file_tokens(file)
+    l = [0, 0, 0, 0, 0, 0]
+    for token in tokens:
+        for (type, polar) in dict[token]:
+            if type = 'strongsubj':
+                if polar == 'positive':
+                    l[0] += 1
+                elif polar == 'negative':
+                    l[1] += 1
+                elif polar == 'neutral':
+                    l[2] += 1
+            if type = 'weaksubj':
+                if polar == 'positive':
+                    l[3] += 1
+                elif polar == 'negative':
+                    l[4] += 1
+                elif polar == 'neutral':
+                    l[5] += 1
+    return l
+
 def get_geninq_lexicon(lexicon_path):
     words = dict()
     for line in open(lexicon_path):
@@ -94,7 +128,6 @@ def get_geninq_lexicon(lexicon_path):
         weak = 1 if line.find('Weak') is not -1 else 0
         words[word] = (positive, negative, strong, weak)
     return words
-
 
 def main():
     #top_words = extract_top_words('data')
