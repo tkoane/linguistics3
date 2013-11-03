@@ -131,6 +131,12 @@ def get_geninq_lexicon(lexicon_path):
         words[word] = (positive, negative, strong, weak)
     return words
 
+def get_geninq_features(filename, geninq_dict):
+    l = [0, 0, 0, 0]
+    for token in load_file_tokens(filename):
+        l = [a + b for a, b in zip(l, geninq_dict[token)]
+    return l
+
 def main():
     #top_words = extract_top_words('/home1/c/cis530/hw3/data')
     #print unigram_map_entry('/home1/c/cis530/hw3/data/6285515.txt', top_words)
@@ -141,6 +147,7 @@ def main():
     gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
     print gi_dict["make"]
     print gi_dict["malady"]
+    print get_geninq_features('data/2067818.txt', gi_dict)
 
 if __name__ == "__main__":
     main()
