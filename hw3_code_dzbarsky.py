@@ -134,20 +134,22 @@ def get_geninq_lexicon(lexicon_path):
 def get_geninq_features(filename, geninq_dict):
     l = [0, 0, 0, 0]
     for token in load_file_tokens(filename):
-        l = [a + b for a, b in zip(l, geninq_dict[token)]
+        l = [a + b for a, b in zip(l, geninq_dict[token])]
     return l
 
 def main():
     #top_words = extract_top_words('/home1/c/cis530/hw3/data')
     #print unigram_map_entry('/home1/c/cis530/hw3/data/6285515.txt', top_words)
-    dic = get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')
-    print get_mpqa_features('/home1/c/cis530/hw3/data/6285515.txt', dic)
-    print get_mpqa_features_wordtype('/home1/c/cis530/hw3/data/6285515.txt', dic)
+    #dic = get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')
+    #print get_mpqa_features('/home1/c/cis530/hw3/data/6285515.txt', dic)
+    #print get_mpqa_features_wordtype('/home1/c/cis530/hw3/data/6285515.txt', dic)
     #print get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')['mean']
-    gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
-    print gi_dict["make"]
-    print gi_dict["malady"]
-    print get_geninq_features('data/2067818.txt', gi_dict)
+    #gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
+    #print gi_dict["make"]
+    #print gi_dict["malady"]
+    #print get_geninq_features('data/2067818.txt', gi_dict)
+    os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist datafilelist.txt -outputDirectory data_result')
+    os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist test_datafilelist.txt -outputDirectory test_data_result')
 
 if __name__ == "__main__":
     main()
