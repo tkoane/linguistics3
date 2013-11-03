@@ -84,10 +84,25 @@ def get_mpqa_lexicon(lexicon_path):
           words[word].append((type, polarity))
     return words
 
+def get_geninq_lexicon(lexicon_path):
+    words = dict()
+    for line in open(lexicon_path):
+        word = line[:line.find('\t')]
+        positive = 1 if (line.find('Pstv') is not -1 or line.find('Pos') is not -1) else 0
+        negative = 1 if (line.find('Ngtv') is not -1 or line.find('Neg') is not -1) else 0
+        strong = 1 if line.find('Strng') is not -1 else 0
+        weak = 1 if line.find('Weak') is not -1 else 0
+        words[word] = (positive, negative, strong, weak)
+    return words
+
+
 def main():
     #top_words = extract_top_words('data')
     #print unigram_map_entry('data/9354.txt', top_words)
     print get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')['mean']
+    gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
+    print gi_dict["make"]
+    print gi_dict["malady"]
 
 if __name__ == "__main__":
     main()
