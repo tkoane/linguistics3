@@ -144,12 +144,12 @@ def main():
     #print get_mpqa_features('/home1/c/cis530/hw3/data/6285515.txt', dic)
     #print get_mpqa_features_wordtype('/home1/c/cis530/hw3/data/6285515.txt', dic)
     #print get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')['mean']
-    #gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
+    gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
     #print gi_dict["make"]
     #print gi_dict["malady"]
-    #print get_geninq_features('data/2067818.txt', gi_dict)
-    os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist datafilelist.txt -outputDirectory data_result')
-    os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist test_datafilelist.txt -outputDirectory test_data_result')
+    print get_geninq_features('data/2067818.txt', gi_dict)
+    #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist datafilelist.txt -outputDirectory data_result')
+    #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist test_datafilelist.txt -outputDirectory test_data_result')
 
 if __name__ == "__main__":
     main()
