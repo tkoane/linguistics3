@@ -242,6 +242,8 @@ def map_verb_dependencies(xml_filename, dependency_list):
                 pass
     return array
 
+
+
 def main():
     #top_words = extract_top_words('/home1/c/cis530/hw3/data')
     #print unigram_map_entry('/home1/c/cis530/hw3/data/6285515.txt', top_words)
@@ -259,6 +261,9 @@ def main():
     #print extract_named_entities('data_result/71964.txt.xml')
     print extract_adjectives('data_result')
     #print map_verb_dependencies('data_result/71964.txt.xml', extract_verb_dependencies('data_result'))
+    dictionary = extract_verb_dependencies('data_result')
+    print dictionary
+    print map_verb_dependencies('data_result/71964.txt.xml', dictionary)
     #print map_adjectives('data_result/71964.txt.xml', ['big', 'small', 'public'])
 
 if __name__ == "__main__":
