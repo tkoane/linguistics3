@@ -203,20 +203,32 @@ def map_verbs(xml_filename, verb_list):
     return [1 if t in verbs else 0 for t in verb_list]
 
 def extract_verb_dependencies(xml_path):
-    deps = dict()
-    l = []
+    dep_dict = dict()
     #finds the list of verb dependencies
     verb_deps = load_file_tokens('/home1/c/cis530/hw3/verb_deps.txt')
-    print verb_deps
-    '''
-    if xml_path.find('.xml') < 0:
-        for file in get_all_files(xml_path):
-            try:
-                tree = ElementTree.parse(xml_path + '/' + file)
-                for basic_dep in tree.getroot().findall('basic-dependencies'):
-                    for dep in basic_dep.findall('dep'):
-                        name = dep.get('type')
-                        '''
+    if xml_path.find('.xml') is not -1:
+        paths = [xml_path]
+    else:
+        paths = [xml_path + '/' + file for file in get_all_files(xml_path)]
+    for path in paths:
+        try:
+            tree = ElementTree.parse(path)
+            for basic_dep in tree.getroot().findall('basic-dependencies'):
+                for dep in basic_dep.findall('dep'):
+                    name = dep.get('type')
+                    if name in verb_deps:
+                        t = (name, dep.find('governor').text, dep.find('dependent').text)
+                        if t in dep_list.keys():
+                            dep_dict[t] += 1
+                        else:
+                            dep_dict[t] = 1
+        except:
+            pass
+    dep_list = []
+    for dep in dep_dict.keys():
+        if dep_dict[dep] >= 5:
+            dep_list.append(dep)
+    return dep_list
 
 def main():
     #top_words = extract_top_words('/home1/c/cis530/hw3/data')
@@ -232,10 +244,10 @@ def main():
     #command line call to run CoreNLP
     #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist datafilelist.txt -outputDirectory data_result')
     #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist test_datafilelist.txt -outputDirectory test_data_result')
-    print extract_named_entities('data_result/71964.txt.xml')
-    print extract_adjectives('data_result')
-    print extract_verb_dependencies('asdf')
-    print map_adjectives('data_result/71964.txt.xml', ['big', 'small', 'public'])
+    #print extract_named_entities('data_result/71964.txt.xml')
+    #print extract_adjectives('data_result')
+    print extract_verb_dependencies('data_result')
+    #print map_adjectives('data_result/71964.txt.xml', ['big', 'small', 'public'])
 
 if __name__ == "__main__":
     main()
