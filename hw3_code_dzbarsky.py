@@ -173,9 +173,14 @@ def extract_named_entities(xml_file_name):
 
 def extract_pos(training_xml_path, pos_list):
     words = []
-    for file in get_all_files(training_xml_path):
+    if training_xml_path.find('.xml') is not -1:
+        paths = [training_xml_path]
+    else:
+        paths = [training_xml_path + '/' + file for file in get_all_files(training_xml_path)]
+
+    for path in paths:
         try:
-            tree = ElementTree.parse(training_xml_path + '/' + file)
+            tree = ElementTree.parse(path)
             for token in tree.getroot().iter('token'):
                 if token.find('POS').text in pos_list:
                     words.append(token.find('word').text)
@@ -188,6 +193,14 @@ def extract_adjectives(training_xml_path):
 
 def extract_verbs(training_xml_path):
     return extract_pos(training_xml_path, ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ'])
+
+def map_adjectives(xml_filename, adj_list):
+    adjectives = extract_adjectives(xml_filename)
+    return [1 if t in adjectives else 0 for t in adj_list]
+
+def map_verbs(xml_filename, verb_list):
+    verbs = extract_verbs(xml_filename)
+    return [1 if t in verbs else 0 for t in verb_list]
 
 def extract_verb_dependencies(xml_path):
     deps = dict()
@@ -204,7 +217,6 @@ def extract_verb_dependencies(xml_path):
                     for dep in basic_dep.findall('dep'):
                         name = dep.get('type')
                         '''
-
 
 def main():
     #top_words = extract_top_words('/home1/c/cis530/hw3/data')
@@ -223,6 +235,7 @@ def main():
     print extract_named_entities('data_result/71964.txt.xml')
     print extract_adjectives('data_result')
     print extract_verb_dependencies('asdf')
+    print map_adjectives('data_result/71964.txt.xml', ['big', 'small', 'public'])
 
 if __name__ == "__main__":
     main()
