@@ -218,6 +218,7 @@ def extract_verb_dependencies(xml_path):
                     name = dep.get('type')
                     if name in verb_deps:
                         t = (name, dep.find('governor').text, dep.find('dependent').text)
+                        print t
                         if t in dep_list.keys():
                             dep_dict[t] += 1
                         else:
@@ -229,6 +230,18 @@ def extract_verb_dependencies(xml_path):
         if dep_dict[dep] >= 5:
             dep_list.append(dep)
     return dep_list
+
+def map_verb_dependencies(xml_filename, dependency_list):
+    array = [0] * len(dependency_list)
+    tree = ElementTree.parse(xml_filename)
+    for basic_dep in tree.getroot().findall('basic-dependencies'):
+        for dep in basic_dep.findall('dep'):
+            try:
+                i = (dep.get('type'), dep.find('governor').text, dep.find('dependent').text).index
+                array[i] += 1
+            except:
+                pass
+    return array
 
 def main():
     #top_words = extract_top_words('/home1/c/cis530/hw3/data')
