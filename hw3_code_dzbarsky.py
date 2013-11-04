@@ -135,7 +135,8 @@ def get_geninq_lexicon(lexicon_path):
 def get_geninq_features(filename, geninq_dict):
     l = [0, 0, 0, 0]
     for token in load_file_tokens(filename):
-        l = [a + b for a, b in zip(l, geninq_dict[token])]
+        if token in geninq_dict:
+            l = [a + b for a, b in zip(l, geninq_dict[token])]
     return l
 
 #helper to remove adjacent duplicates
@@ -183,7 +184,7 @@ def main():
     #command line call to run CoreNLP
     #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist datafilelist.txt -outputDirectory data_result')
     #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist test_datafilelist.txt -outputDirectory test_data_result')
-    #print extract_named_entities('data_result/71964.txt.xml')
+    print extract_named_entities('data_result/71964.txt.xml')
 
 if __name__ == "__main__":
     main()
