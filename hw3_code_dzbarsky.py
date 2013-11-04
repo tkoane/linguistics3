@@ -213,18 +213,17 @@ def extract_verb_dependencies(xml_path):
     for path in paths:
         try:
             tree = ElementTree.parse(path)
-            for basic_dep in tree.getroot().findall('basic-dependencies'):
+            for basic_dep in tree.getroot().iter('basic-dependencies'):
                 for dep in basic_dep.findall('dep'):
                     name = dep.get('type')
                     if name in verb_deps:
                         t = (name, dep.find('governor').text, dep.find('dependent').text)
-                        print t
-                        if t in dep_list.keys():
+                        if t in dep_dict.keys():
                             dep_dict[t] += 1
                         else:
                             dep_dict[t] = 1
         except:
-            pass
+           pass
     dep_list = []
     for dep in dep_dict.keys():
         if dep_dict[dep] >= 5:
