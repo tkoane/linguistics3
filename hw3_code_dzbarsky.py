@@ -189,6 +189,22 @@ def extract_adjectives(training_xml_path):
 def extract_verbs(training_xml_path):
     return extract_pos(training_xml_path, ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ'])
 
+def extract_verb_dependencies(xml_path):
+    deps = dict()
+    l = []
+    #finds the list of verb dependencies
+    verb_deps = load_file_tokens('/home1/c/cis530/hw3/verb_deps.txt')
+    print verb_deps
+    '''
+    if xml_path.find('.xml') < 0:
+        for file in get_all_files(xml_path):
+            try:
+                tree = ElementTree.parse(xml_path + '/' + file)
+                for basic_dep in tree.getroot().findall('basic-dependencies'):
+                    for dep in basic_dep.findall('dep'):
+                        name = dep.get('type')
+                        '''
+
 
 def main():
     #top_words = extract_top_words('/home1/c/cis530/hw3/data')
@@ -206,6 +222,7 @@ def main():
     #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist test_datafilelist.txt -outputDirectory test_data_result')
     print extract_named_entities('data_result/71964.txt.xml')
     print extract_adjectives('data_result')
+    print extract_verb_dependencies('asdf')
 
 if __name__ == "__main__":
     main()
