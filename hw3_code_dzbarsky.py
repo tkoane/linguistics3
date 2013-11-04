@@ -186,7 +186,7 @@ def extract_pos(training_xml_path, pos_list):
                     words.append(token.find('word').text)
         except:
             pass
-    return words
+    return list(set(words))
 
 def extract_adjectives(training_xml_path):
     return extract_pos(training_xml_path, ['JJ', 'JJR', 'JJS'])
@@ -260,7 +260,8 @@ def main():
     #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist datafilelist.txt -outputDirectory data_result')
     #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist test_datafilelist.txt -outputDirectory test_data_result')
     #print extract_named_entities('data_result/71964.txt.xml')
-    #print extract_adjectives('data_result')
+    print extract_adjectives('data_result')
+    #print map_verb_dependencies('data_result/71964.txt.xml', extract_verb_dependencies('data_result'))
     dictionary = extract_verb_dependencies('data_result')
     print dictionary
     print map_verb_dependencies('data_result/334701.txt.xml', dictionary)
