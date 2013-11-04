@@ -4,6 +4,7 @@
 from nltk.corpus import PlaintextCorpusReader
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem.porter import PorterStemmer
+from xml.etree import ElementTree
 import math
 import string
 import random
@@ -138,6 +139,24 @@ def get_geninq_features(filename, geninq_dict):
             l = [a + b for a, b in zip(l, geninq_dict[token])]
     return l
 
+def extract_pos(training_xml_path, pos_list):
+    words = []
+    for file in get_all_files(training_xml_path):
+        try:
+            tree = ElementTree.parse(training_xml_path + '/' + file)
+            for token in tree.getroot().iter('token'):
+                if token.find('POS').text in pos_list:
+                    words.append(token.find('word').text)
+        except:
+            pass
+    return words
+
+def extract_adjectives(training_xml_path):
+    return extract_pos(training_xml_path, ['JJ', 'JJR', 'JJS'])
+
+def extract_verbs(training_xml_path):
+    return extract_pos(training_xml_path, ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ'])
+
 def main():
     #top_words = extract_top_words('/home1/c/cis530/hw3/data')
     #print unigram_map_entry('/home1/c/cis530/hw3/data/6285515.txt', top_words)
@@ -145,10 +164,11 @@ def main():
     #print get_mpqa_features('/home1/c/cis530/hw3/data/6285515.txt', dic)
     #print get_mpqa_features_wordtype('/home1/c/cis530/hw3/data/6285515.txt', dic)
     #print get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')['mean']
-    gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
+    #gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
     #print gi_dict["make"]
     #print gi_dict["malady"]
-    print get_geninq_features('data/2067818.txt', gi_dict)
+   # print get_geninq_features('data/2067818.txt', gi_dict)
+    print extract_adjectives('data_result')
     #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist datafilelist.txt -outputDirectory data_result')
     #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist test_datafilelist.txt -outputDirectory test_data_result')
 
