@@ -236,7 +236,8 @@ def map_verb_dependencies(xml_filename, dependency_list):
     for basic_dep in tree.getroot().iter('basic-dependencies'):
         for dep in basic_dep.findall('dep'):
             try:
-                i = (dep.get('type'), dep.find('governor').text, dep.find('dependent').text).index
+                t = (dep.get('type'), dep.find('governor').text, dep.find('dependent').text)
+                i = dependency_list.index(t)
                 array[i] += 1
             except:
                 pass
@@ -262,7 +263,7 @@ def main():
     #print extract_adjectives('data_result')
     dictionary = extract_verb_dependencies('data_result')
     print dictionary
-    print map_verb_dependencies('data_result/71964.txt.xml', dictionary)
+    print map_verb_dependencies('data_result/334701.txt.xml', dictionary)
     #print map_adjectives('data_result/71964.txt.xml', ['big', 'small', 'public'])
 
 if __name__ == "__main__":
