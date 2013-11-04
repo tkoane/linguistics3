@@ -11,6 +11,7 @@ import fileinput
 import os
 import itertools
 import subprocess
+import xml.etree.ElementTree as ET
 
 '''
 homework 3 by David Zbarsky and Yaou Wang
@@ -137,6 +138,37 @@ def get_geninq_features(filename, geninq_dict):
         l = [a + b for a, b in zip(l, geninq_dict[token])]
     return l
 
+#helper to remove adjacent duplicates
+def remove_adj_dup(l):
+    for i in range(len(l) - 1, 0, -1):
+        if l[i] == l[i - 1]:
+            l[i] = '0'
+    return l
+
+def extract_named_entities(xml_file_name):
+    try:
+        tree = ET.parse(xml_file_name)
+        root = tree.getroot()
+        l = []
+        names = [0, 0, 0, 0, 0]
+        for token in root.iter('token'):
+            l.append(token.find('NER').text)
+        l = remove_adj_dup(l)
+        for ner in l:
+            if ner == 'ORGANIZATION':
+                names[0] += 1
+            if ner == 'PERSON':
+                names[1] += 1
+            if ner == 'LOCATION':
+                names[2] += 1
+            if ner == 'MONEY':
+                names[3] += 1
+            if ner == 'DATE':
+                names[4] += 1
+        return names
+    except:
+        return [0, 0, 0, 0, 0]
+
 def main():
     #top_words = extract_top_words('/home1/c/cis530/hw3/data')
     #print unigram_map_entry('/home1/c/cis530/hw3/data/6285515.txt', top_words)
@@ -148,8 +180,10 @@ def main():
     #print gi_dict["make"]
     #print gi_dict["malady"]
     #print get_geninq_features('data/2067818.txt', gi_dict)
-    os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist datafilelist.txt -outputDirectory data_result')
-    os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist test_datafilelist.txt -outputDirectory test_data_result')
+    #command line call to run CoreNLP
+    #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist datafilelist.txt -outputDirectory data_result')
+    #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist test_datafilelist.txt -outputDirectory test_data_result')
+    #print extract_named_entities('data_result/71964.txt.xml')
 
 if __name__ == "__main__":
     main()
