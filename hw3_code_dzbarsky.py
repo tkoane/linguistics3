@@ -29,9 +29,11 @@ def get_all_files(directory):
 
 def load_file_sentences(filepath):
     index = filepath.rfind('/')
-    dir = filepath[:index]
-    filepath = filepath[index + 1:]
-    return sent_tokenize(PlaintextCorpusReader(dir, filepath).raw().lower())
+    if index < 0:
+        sents = sent_tokenize(PlaintextCorpusReader('.', filepath).raw())
+    else:
+        sents = sent_tokenize(PlaintextCorpusReader(filepath[:index], filepath[index+1:]).raw())
+    return sents
 
 def load_file_tokens(filepath):
     tokens = []
@@ -243,9 +245,119 @@ def map_verb_dependencies(xml_filename, dependency_list):
                 pass
     return array
 
+#from hw2: helper that gets the group of high vs low return files
+def get_files_listed(corpusroot, filelist):
+    lowd = dict()
+    highd = dict()
+    files = get_all_files(corpusroot)
+    index = filelist.rfind('/')
+    if index < 0:
+        tokens = word_tokenize(PlaintextCorpusReader('.', filelist).raw())
+    else:
+        tokens = word_tokenize(PlaintextCorpusReader(filelist[:index], filelist[index+1:]).raw())
+    i = 0
+    while i < len(tokens):
+        if float(tokens[i+1]) <= -5.0 and tokens[i] in files:
+            lowd[tokens[i]] = float(tokens[i+1])
+        if float(tokens[i+1]) >= 5.0 and tokens[i] in files:
+            highd[tokens[i]] = float(tokens[i+1])
+        i += 2
 
+    return (lowd, highd)
 
+def write_features(f, label, v):
+    f.write(str(label))
+    for i in range(len(v)):
+        if v[i] != 0:
+            f.write(' ' + str(i + 1) + ':' + str(v[i]))
+    f.write('\n')
+
+def process_corpus(txt_dir, xml_dir, feature_mode):
+    
+    (lowd, highd) = get_files_listed(txt_dir, '/home1/c/cis530/hw3/xret_tails.txt')
+    #here we want lexical features
+    if feature_mode == 1:
+        top_words = extract_top_words(txt_dir)
+        f = open('train_1_lexical.txt', 'w')
+        for file in get_all_files(txt_dir):
+            v = unigram_map_entry(txt_dir + '/' + file, top_words)
+            if file in lowd:
+                label = -1
+            else:
+                label = 1
+            write_features(f, label, v)
+            
+    elif feature_mode == 2:
+        mpqa_dict = get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')
+        gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
+        f = open('train_2_sentiment.txt', 'w')
+        for file in get_all_files(txt_dir):
+            v = get_mpqa_features(txt_dir + '/' + file, mpqa_dict)
+            v.extend(get_geninq_features(txt_dir + '/' + file, gi_dict))
+            if file in lowd:
+                label = -1
+            else:
+                label = 1
+            write_features(f, label, v)
+        
+    elif feature_mode == 3:
+        f = open('train_3_named_entity.txt', 'w')
+        for file in get_all_files(xml_dir):
+            v = extract_named_entities(xml_dir + '/' + file)
+            if file[:file.find('.xml')] in lowd:
+                label = -1
+            else:
+                label = 1
+            write_features(f, label, v)
+
+    elif feature_mode == 4:
+        f = open('train_4_postags.txt', 'w')
+        adj_list = extract_adjectives(xml_dir)
+        verb_list = extract_verbs(xml_dir)
+        for file in get_all_files(xml_dir):
+            v = map_adjectives(xml_dir + '/' + file, adj_list)
+            v.extend(map_verbs(xml_dir + '/' + file, verb_list))
+            if file[:file.find('.xml')] in lowd:
+                label = -1
+            else:
+                label = 1
+            write_features(f, label, v)
+
+    elif feature_mode == 5:
+        f = open('train_5_dependency.txt', 'w')
+        dep_list = extract_verb_dependencies(xml_dir)
+        for file in get_all_files(xml_dir):
+            v = map_verb_dependencies(xml_dir + '/' + file, dep_list)
+            if file[:file.find('.xml')] in lowd:
+                label = -1
+            else:
+                label = 1
+            write_features(f, label, v)
+            
+    elif feature_mode == 6:
+        f = open('train_6_all.txt', 'w')
+        top_words = extract_top_words(txt_dir)
+        mpqa_dict = get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')
+        gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
+        adj_list = extract_adjectives(xml_dir)
+        verb_list = extract_verbs(xml_dir)
+        dep_list = extract_verb_dependencies(xml_dir)
+        for file in get_all_files(txt_dir):
+            v = unigram_map_entry(txt_dir + '/' + file, top_words)
+            v.extend(get_mpqa_features(txt_dir + '/' + file, mpqa_dict))
+            v.extend(get_geninq_features(txt_dir + '/' + file, gi_dict))
+            v.extend(extract_named_entities(xml_dir + '/' + file + '.xml'))
+            v.extend(map_adjectives(xml_dir + '/' + file + '.xml', adj_list))
+            v.extend(map_verbs(xml_dir + '/' + file + '.xml', verb_list))
+            v.extend(map_verb_dependencies(xml_dir + '/' + file, dep_list))
+            if file in lowd:
+                label = -1
+            else:
+                label = 1
+            write_features(f, label, v)
+        
 def main():
+    #test functions for Part 1 & 2
     #top_words = extract_top_words('/home1/c/cis530/hw3/data')
     #print unigram_map_entry('/home1/c/cis530/hw3/data/6285515.txt', top_words)
     #dic = get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')
@@ -256,16 +368,30 @@ def main():
     #print gi_dict["make"]
     #print gi_dict["malady"]
     #print get_geninq_features('data/2067818.txt', gi_dict)
+
+    
     #command line call to run CoreNLP
     #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist datafilelist.txt -outputDirectory data_result')
     #os.system('java -cp stanford-corenlp-2012-07-09.jar:stanford-corenlp-2012-07-06-models.jar:xom.jar:joda-time.jar -Xmx3g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -filelist test_datafilelist.txt -outputDirectory test_data_result')
+
+    #test functions for Part 3, 4, & 5
     #print extract_named_entities('data_result/71964.txt.xml')
-    print extract_adjectives('data_result')
-    #print map_verb_dependencies('data_result/71964.txt.xml', extract_verb_dependencies('data_result'))
-    dictionary = extract_verb_dependencies('data_result')
-    print dictionary
-    print map_verb_dependencies('data_result/334701.txt.xml', dictionary)
+    #print extract_adjectives('data_result')
     #print map_adjectives('data_result/71964.txt.xml', ['big', 'small', 'public'])
+    #dictionary = extract_verb_dependencies('data_result')
+    #print dictionary
+    #print map_verb_dependencies('data_result/334701.txt.xml', dictionary)
+
+    #generating files for Part 6.2
+    txt_dir = 'data'
+    xml_dir = 'data_result'
+    process_corpus(txt_dir, xml_dir, 1)
+    process_corpus(txt_dir, xml_dir, 2)
+    process_corpus(txt_dir, xml_dir, 3)
+    process_corpus(txt_dir, xml_dir, 4)
+    process_corpus(txt_dir, xml_dir, 5)
+    process_corpus(txt_dir, xml_dir, 6)
+    
 
 if __name__ == "__main__":
     main()
