@@ -276,12 +276,15 @@ def write_features(f, label, v):
     f.write('\n')
 
 def process_corpus(txt_dir, xml_dir, feature_mode):
-    
+    if txt_dir.find('test') < 0:
+        flag = 'train'
+    else:
+        flag = 'test'
     (lowd, highd) = get_files_listed(txt_dir, '/home1/c/cis530/hw3/xret_tails.txt')
     #here we want lexical features
     if feature_mode == 1:
         top_words = extract_top_words(txt_dir)
-        f = open('train_1_lexical.txt', 'w')
+        f = open(flag + '_1_lexical.txt', 'w')
         for file in get_all_files(txt_dir):
             v = unigram_map_entry(txt_dir + '/' + file, top_words)
             if file in lowd:
@@ -293,7 +296,7 @@ def process_corpus(txt_dir, xml_dir, feature_mode):
     elif feature_mode == 2:
         mpqa_dict = get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')
         gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
-        f = open('train_2_sentiment.txt', 'w')
+        f = open(flag + '_2_sentiment.txt', 'w')
         for file in get_all_files(txt_dir):
             v = get_mpqa_features(txt_dir + '/' + file, mpqa_dict)
             v.extend(get_geninq_features(txt_dir + '/' + file, gi_dict))
@@ -304,7 +307,7 @@ def process_corpus(txt_dir, xml_dir, feature_mode):
             write_features(f, label, v)
         
     elif feature_mode == 3:
-        f = open('train_3_named_entity.txt', 'w')
+        f = open(flag + '_3_named_entity.txt', 'w')
         for file in get_all_files(xml_dir):
             v = extract_named_entities(xml_dir + '/' + file)
             if file[:file.find('.xml')] in lowd:
@@ -314,7 +317,7 @@ def process_corpus(txt_dir, xml_dir, feature_mode):
             write_features(f, label, v)
 
     elif feature_mode == 4:
-        f = open('train_4_postags.txt', 'w')
+        f = open(flag + '_4_postags.txt', 'w')
         adj_list = extract_adjectives(xml_dir)
         verb_list = extract_verbs(xml_dir)
         for file in get_all_files(xml_dir):
@@ -327,7 +330,7 @@ def process_corpus(txt_dir, xml_dir, feature_mode):
             write_features(f, label, v)
 
     elif feature_mode == 5:
-        f = open('train_5_dependency.txt', 'w')
+        f = open(flag + '_5_dependency.txt', 'w')
         dep_list = extract_verb_dependencies(xml_dir)
         for file in get_all_files(xml_dir):
             v = map_verb_dependencies(xml_dir + '/' + file, dep_list)
@@ -338,7 +341,7 @@ def process_corpus(txt_dir, xml_dir, feature_mode):
             write_features(f, label, v)
             
     elif feature_mode == 6:
-        f = open('train_6_all.txt', 'w')
+        f = open(flag + '_6_all.txt', 'w')
         top_words = extract_top_words(txt_dir)
         mpqa_dict = get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')
         gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
@@ -358,7 +361,10 @@ def process_corpus(txt_dir, xml_dir, feature_mode):
             else:
                 label = 1
             write_features(f, label, v)
-        
+
+def compute_performance(test_file, output_file)
+    pass
+            
 def main():
     #test functions for Part 1 & 2
     #top_words = extract_top_words('/home1/c/cis530/hw3/data')
@@ -385,7 +391,8 @@ def main():
     #print dictionary
     #print map_verb_dependencies('data_result/334701.txt.xml', dictionary)
 
-    #generating files for Part 6.2
+    '''
+    #generating training files for Part 6.2
     txt_dir = 'data'
     xml_dir = 'data_result'
     process_corpus(txt_dir, xml_dir, 1)
@@ -394,15 +401,49 @@ def main():
     process_corpus(txt_dir, xml_dir, 4)
     process_corpus(txt_dir, xml_dir, 5)
     process_corpus(txt_dir, xml_dir, 6)
+
+    #call on svm to train files
+    #we use -t 0 to change training into a linear model
+    os.system('svm-train -t 0 train_1_lexical.txt 1_model.model')
+    os.system('svm-train -t 0 train_2_sentiment.txt 2_model.model')
+    os.system('svm-train -t 0 train_3_named_entity.txt 3_model.model')
+    os.system('svm-train -t 0 train_4_postags.txt 4_model.model')
+    os.system('svm-train -t 0 train_5_dependency.txt 5_model.model')
+    os.system('svm-train -t 0 train_6_all.txt 6_model.model')
+    '''
+    '''
+    #generating testing files for Part 6.3
+    txt_dir = 'test_data'
+    xml_dir = 'test_data_result'
+    process_corpus(txt_dir, xml_dir, 1)
+    process_corpus(txt_dir, xml_dir, 2)
+    process_corpus(txt_dir, xml_dir, 3)
+    process_corpus(txt_dir, xml_dir, 4)
+    process_corpus(txt_dir, xml_dir, 5)
+    process_corpus(txt_dir, xml_dir, 6)
     
+    #call on svm to predict files
+    os.system('svm-predict test_1_lexical.txt 1_model.model 1_result')
+    os.system('svm-predict test_2_sentiment.txt 2_model.model 2_result')
+    os.system('svm-predict test_3_named_entity.txt 3_model.model 3_result')
+    os.system('svm-predict test_4_postags.txt 4_model.model 4_result')
+    os.system('svm-predict test_5_dependency.txt 5_model.model 5_result')
+    os.system('svm-predict test_6_all.txt 6_model.model 6_result')
+    '''
+    '''
+    #computes precision, recall and f-score
+    
+
+
+    '''
     #finds invalid xml files
-'''
+    '''
     for file in get_all_files(xml_dir):
         try:
             tree = ElementTree.parse(xml_dir + '/' + file)
         except:
             print file
-'''
+    '''
 
 if __name__ == "__main__":
     main()
