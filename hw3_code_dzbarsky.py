@@ -234,15 +234,18 @@ def extract_verb_dependencies(xml_path):
 
 def map_verb_dependencies(xml_filename, dependency_list):
     array = [0] * len(dependency_list)
-    tree = ElementTree.parse(xml_filename)
-    for basic_dep in tree.getroot().iter('basic-dependencies'):
-        for dep in basic_dep.findall('dep'):
-            try:
-                t = (dep.get('type'), dep.find('governor').text, dep.find('dependent').text)
-                i = dependency_list.index(t)
-                array[i] += 1
-            except:
-                pass
+    try:
+        tree = ElementTree.parse(xml_filename)
+        for basic_dep in tree.getroot().iter('basic-dependencies'):
+            for dep in basic_dep.findall('dep'):
+                try:
+                    t = (dep.get('type'), dep.find('governor').text, dep.find('dependent').text)
+                    i = dependency_list.index(t)
+                    array[i] += 1
+                except:
+                    pass
+    except:
+        pass
     return array
 
 #from hw2: helper that gets the group of high vs low return files
@@ -392,6 +395,14 @@ def main():
     process_corpus(txt_dir, xml_dir, 5)
     process_corpus(txt_dir, xml_dir, 6)
     
+    #finds invalid xml files
+'''
+    for file in get_all_files(xml_dir):
+        try:
+            tree = ElementTree.parse(xml_dir + '/' + file)
+        except:
+            print file
+'''
 
 if __name__ == "__main__":
     main()
