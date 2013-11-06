@@ -391,7 +391,7 @@ def main():
     #print dictionary
     #print map_verb_dependencies('data_result/334701.txt.xml', dictionary)
 
-    '''
+    
     #generating training files for Part 6.2
     txt_dir = 'data'
     xml_dir = 'data_result'
@@ -401,7 +401,7 @@ def main():
     process_corpus(txt_dir, xml_dir, 4)
     process_corpus(txt_dir, xml_dir, 5)
     process_corpus(txt_dir, xml_dir, 6)
-
+    '''
     #call on svm to train files
     #we use -t 0 to change training into a linear model
     os.system('svm-train -t 0 train_1_lexical.txt 1_model.model')
@@ -437,7 +437,7 @@ def main():
 
     '''
     #finds invalid xml files
-    
+    '''
     xml_dir = 'data_result'
     for file in get_all_files(xml_dir):
         try:
@@ -445,7 +445,7 @@ def main():
         except Exception as e:
             print e
             print file
-   
+   '''
 
 if __name__ == "__main__":
     main()
