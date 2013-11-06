@@ -196,6 +196,10 @@ def extract_adjectives(training_xml_path):
 def extract_verbs(training_xml_path):
     return extract_pos(training_xml_path, ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ'])
 
+# This is for part 7
+def extract_nouns(training_xml_path):
+    return extract_pos(training_xml_path, ['NN', 'NNS', 'NNP', 'NNPS']
+
 def map_adjectives(xml_filename, adj_list):
     adjectives = extract_adjectives(xml_filename)
     return [1 if t in adjectives else 0 for t in adj_list]
@@ -203,6 +207,11 @@ def map_adjectives(xml_filename, adj_list):
 def map_verbs(xml_filename, verb_list):
     verbs = extract_verbs(xml_filename)
     return [1 if t in verbs else 0 for t in verb_list]
+
+# This is for part 7
+def map_nouns(xml_filename, noun_list):
+    verbs = extract_nouns(xml_filename)
+    return [1 if t in nouns else 0 for t in noun_list]
 
 def extract_verb_dependencies(xml_path):
     dep_dict = dict()
