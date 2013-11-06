@@ -97,8 +97,8 @@
             <NER>O</NER>
           </token>
           <token id="12">
-            <word>7 7\/8</word>
-            <lemma>7 7\/8</lemma>
+            <word>7 7/8</word>
+            <lemma>7 7/8</lemma>
             <CharacterOffsetBegin>53</CharacterOffsetBegin>
             <CharacterOffsetEnd>58</CharacterOffsetEnd>
             <POS>CD</POS>
@@ -165,7 +165,7 @@
             <NER>O</NER>
           </token>
         </tokens>
-        <parse>(ROOT (S (NP (NNP AK) (NNP Steel) (NNP Holding) (NNP Corp.)) (VP (TO to) (VP (VB Redeem) (NP (NP (ADJP ($ $) (CD 225)) (NNP Million)) (PP (IN of) (NP (PRP$ its) (ADJP (NP (CD 7 7\/8) (NN %)) (JJ Senior)) (NNS Notes)))) (PP (JJ Due) (NP (NNP February) (CD 2009))))) (. .))) </parse>
+        <parse>(ROOT (S (NP (NNP AK) (NNP Steel) (NNP Holding) (NNP Corp.)) (VP (TO to) (VP (VB Redeem) (NP (NP (ADJP ($ $) (CD 225)) (NNP Million)) (PP (IN of) (NP (PRP$ its) (ADJP (NP (CD 7 7\/8) (NN %)) (JJ Senior)) (NNS Notes)))) (PP (JJ Due) (NP (NNP February) (CD 2009))))) (. .))) </parse>
         <basic-dependencies>
           <dep type="nn">
             <governor idx="4">Corp.</governor>
@@ -209,7 +209,7 @@
           </dep>
           <dep type="num">
             <governor idx="13">%</governor>
-            <dependent idx="12">7 7\/8</dependent>
+            <dependent idx="12">7 7\/8</dependent>
           </dep>
           <dep type="npadvmod">
             <governor idx="14">Senior</governor>
@@ -275,7 +275,7 @@
           </dep>
           <dep type="num">
             <governor idx="13">%</governor>
-            <dependent idx="12">7 7\/8</dependent>
+            <dependent idx="12">7 7\/8</dependent>
           </dep>
           <dep type="npadvmod">
             <governor idx="14">Senior</governor>
@@ -341,7 +341,7 @@
           </dep>
           <dep type="num">
             <governor idx="13">%</governor>
-            <dependent idx="12">7 7\/8</dependent>
+            <dependent idx="12">7 7\/8</dependent>
           </dep>
           <dep type="npadvmod">
             <governor idx="14">Senior</governor>
@@ -522,8 +522,8 @@
             <NER>O</NER>
           </token>
           <token id="19">
-            <word>7 7\/8</word>
-            <lemma>7 7\/8</lemma>
+            <word>7 7\/8</word>
+            <lemma>7 7\/8</lemma>
             <CharacterOffsetBegin>191</CharacterOffsetBegin>
             <CharacterOffsetEnd>196</CharacterOffsetEnd>
             <POS>CD</POS>
@@ -610,7 +610,7 @@
             <NER>O</NER>
           </token>
         </tokens>
-        <parse>(ROOT (S (NP (NNP AK) (NNP Steel) (NNP Holding) (NNP Corp.)) (VP (VBD announced) (SBAR (IN that) (S (NP (PRP it)) (VP (MD will) (VP (VB redeem) (NP (NP (QP ($ $) (CD 225) (CD million))) (PP (IN of) (NP (NP (PRP$ its) (QP ($ $) (CD 450) (CD million))) (ADJP (JJ outstanding) (NP (CD 7 7\/8) (NN %)))))) (PP (NP (JJ Senior) (NNS Notes)) (JJ Due) (NP (NNP February) (CD 15) (, ,) (CD 2009)))))))) (. .))) </parse>
+        <parse>(ROOT (S (NP (NNP AK) (NNP Steel) (NNP Holding) (NNP Corp.)) (VP (VBD announced) (SBAR (IN that) (S (NP (PRP it)) (VP (MD will) (VP (VB redeem) (NP (NP (QP ($ $) (CD 225) (CD million))) (PP (IN of) (NP (NP (PRP$ its) (QP ($ $) (CD 450) (CD million))) (ADJP (JJ outstanding) (NP (CD 7 7\/8) (NN %)))))) (PP (NP (JJ Senior) (NNS Notes)) (JJ Due) (NP (NNP February) (CD 15) (, ,) (CD 2009)))))))) (. .))) </parse>
         <basic-dependencies>
           <dep type="nn">
             <governor idx="4">Corp.</governor>
@@ -682,7 +682,7 @@
           </dep>
           <dep type="num">
             <governor idx="20">%</governor>
-            <dependent idx="19">7 7\/8</dependent>
+            <dependent idx="19">7 7\/8</dependent>
           </dep>
           <dep type="dep">
             <governor idx="18">outstanding</governor>
@@ -780,7 +780,7 @@
           </dep>
           <dep type="num">
             <governor idx="20">%</governor>
-            <dependent idx="19">7 7\/8</dependent>
+            <dependent idx="19">7 7\/8</dependent>
           </dep>
           <dep type="dep">
             <governor idx="18">outstanding</governor>
@@ -878,7 +878,7 @@
           </dep>
           <dep type="num">
             <governor idx="20">%</governor>
-            <dependent idx="19">7 7\/8</dependent>
+            <dependent idx="19">7 7\/8</dependent>
           </dep>
           <dep type="dep">
             <governor idx="18">outstanding</governor>
@@ -1709,8 +1709,8 @@
             <NER>O</NER>
           </token>
           <token id="25">
-            <word>7 7\/8</word>
-            <lemma>7 7\/8</lemma>
+            <word>7 7\/8</word>
+            <lemma>7 7\/8</lemma>
             <CharacterOffsetBegin>544</CharacterOffsetBegin>
             <CharacterOffsetEnd>549</CharacterOffsetEnd>
             <POS>CD</POS>
@@ -1823,7 +1823,7 @@
             <NER>O</NER>
           </token>
         </tokens>
-        <parse>(ROOT (S (NP (DT The) (NN company)) (ADVP (RB also)) (VP (VBD said) (SBAR (IN that) (S (, ,) (ADVP (JJ subject) (PP (TO to) (NP (NN market) (NNS conditions)))) (, ,) (NP (PRP it)) (VP (MD will) (VP (VB consider) (NP (NP (JJ early) (NN redemption)) (PP (IN of) (NP (NP (DT the) (VBG remaining) (QP ($ $) (CD 225) (CD million))) (PP (IN of) (NP (ADJP (JJ outstanding) (NP (CD 7 7\/8) (NN %))) (JJ Senior) (NNS Notes)))))) (PP (IN during) (CC or) (IN before) (NP (NP (DT the) (JJ first) (NN quarter)) (PP (IN of) (NP (CD 2008)))))))))) (. .))) </parse>
+        <parse>(ROOT (S (NP (DT The) (NN company)) (ADVP (RB also)) (VP (VBD said) (SBAR (IN that) (S (, ,) (ADVP (JJ subject) (PP (TO to) (NP (NN market) (NNS conditions)))) (, ,) (NP (PRP it)) (VP (MD will) (VP (VB consider) (NP (NP (JJ early) (NN redemption)) (PP (IN of) (NP (NP (DT the) (VBG remaining) (QP ($ $) (CD 225) (CD million))) (PP (IN of) (NP (ADJP (JJ outstanding) (NP (CD 7 7\/8) (NN %))) (JJ Senior) (NNS Notes)))))) (PP (IN during) (CC or) (IN before) (NP (NP (DT the) (JJ first) (NN quarter)) (PP (IN of) (NP (CD 2008)))))))))) (. .))) </parse>
         <basic-dependencies>
           <dep type="det">
             <governor idx="2">company</governor>
@@ -1911,7 +1911,7 @@
           </dep>
           <dep type="num">
             <governor idx="26">%</governor>
-            <dependent idx="25">7 7\/8</dependent>
+            <dependent idx="25">7 7\/8</dependent>
           </dep>
           <dep type="dep">
             <governor idx="24">outstanding</governor>
@@ -2037,7 +2037,7 @@
           </dep>
           <dep type="num">
             <governor idx="26">%</governor>
-            <dependent idx="25">7 7\/8</dependent>
+            <dependent idx="25">7 7\/8</dependent>
           </dep>
           <dep type="dep">
             <governor idx="24">outstanding</governor>
@@ -2159,7 +2159,7 @@
           </dep>
           <dep type="num">
             <governor idx="26">%</governor>
-            <dependent idx="25">7 7\/8</dependent>
+            <dependent idx="25">7 7\/8</dependent>
           </dep>
           <dep type="dep">
             <governor idx="24">outstanding</governor>

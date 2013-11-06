@@ -371,7 +371,7 @@ def process_corpus(txt_dir, xml_dir, feature_mode):
                 label = 1
             write_features(f, label, v)
 
-def compute_performance(test_file, output_file)
+def compute_performance(test_file, output_file):
     pass
             
 def main():
@@ -446,13 +446,15 @@ def main():
 
     '''
     #finds invalid xml files
-    '''
+    
+    xml_dir = 'data_result'
     for file in get_all_files(xml_dir):
         try:
             tree = ElementTree.parse(xml_dir + '/' + file)
-        except:
+        except Exception as e:
+            print e
             print file
-    '''
+   
 
 if __name__ == "__main__":
     main()

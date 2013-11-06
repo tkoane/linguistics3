@@ -1158,7 +1158,7 @@
             <CharacterOffsetEnd>416</CharacterOffsetEnd>
             <POS>#</POS>
             <NER>MONEY</NER>
-            <NormalizedNER>£2.0 - 0.0</NormalizedNER>
+            <NormalizedNER>2.0 - 0.0</NormalizedNER>
           </token>
           <token id="13">
             <word>02-00</word>
@@ -1167,7 +1167,7 @@
             <CharacterOffsetEnd>421</CharacterOffsetEnd>
             <POS>CD</POS>
             <NER>MONEY</NER>
-            <NormalizedNER>£2.0 - 0.0</NormalizedNER>
+            <NormalizedNER>2.0 - 0.0</NormalizedNER>
           </token>
           <token id="14">
             <word>in</word>
