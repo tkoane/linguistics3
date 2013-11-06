@@ -373,6 +373,24 @@ def process_corpus(txt_dir, xml_dir, feature_mode):
 
 def compute_performance(test_file, output_file):
     pass
+
+'''
+Accuracy for models 1 - 6:
+Accuracy = 47% (47/100) (classification)
+Accuracy = 50% (50/100) (classification)
+Accuracy = 50% (50/100) (classification)
+Accuracy = 56% (56/100) (classification)
+Accuracy = 51% (51/100) (classification)
+Accuracy = 53% (53/100) (classification)
+
+Files and what they are:
+
+#_model.model: these files are the regression models we generate from the training data
+#_result: these are the prediction files (output_file) that we generate from the models (on the test data)
+test_#_...txt: these are the formatted features of the test data (test_file)
+train_#_...txt: these are the formatted features of the training data files
+
+'''
             
 def main():
     #test functions for Part 1 & 2
@@ -411,6 +429,7 @@ def main():
     process_corpus(txt_dir, xml_dir, 5)
     process_corpus(txt_dir, xml_dir, 6)
     '''
+    '''
     #call on svm to train files
     #we use -t 0 to change training into a linear model
     os.system('svm-train -t 0 train_1_lexical.txt 1_model.model')
@@ -419,7 +438,7 @@ def main():
     os.system('svm-train -t 0 train_4_postags.txt 4_model.model')
     os.system('svm-train -t 0 train_5_dependency.txt 5_model.model')
     os.system('svm-train -t 0 train_6_all.txt 6_model.model')
-    
+    '''
     '''
     #generating testing files for Part 6.3
     txt_dir = 'test_data'
@@ -430,7 +449,8 @@ def main():
     process_corpus(txt_dir, xml_dir, 4)
     process_corpus(txt_dir, xml_dir, 5)
     process_corpus(txt_dir, xml_dir, 6)
-    
+    '''
+    '''
     #call on svm to predict files
     os.system('svm-predict test_1_lexical.txt 1_model.model 1_result')
     os.system('svm-predict test_2_sentiment.txt 2_model.model 2_result')
@@ -439,6 +459,7 @@ def main():
     os.system('svm-predict test_5_dependency.txt 5_model.model 5_result')
     os.system('svm-predict test_6_all.txt 6_model.model 6_result')
     '''
+
     '''
     #computes precision, recall and f-score
     
