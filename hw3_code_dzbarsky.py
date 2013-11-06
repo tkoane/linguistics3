@@ -198,7 +198,7 @@ def extract_verbs(training_xml_path):
 
 # This is for part 7
 def extract_nouns(training_xml_path):
-    return extract_pos(training_xml_path, ['NN', 'NNS', 'NNP', 'NNPS']
+    return extract_pos(training_xml_path, ['NN', 'NNS', 'NNP', 'NNPS'])
 
 def map_adjectives(xml_filename, adj_list):
     adjectives = extract_adjectives(xml_filename)
@@ -400,7 +400,7 @@ def main():
     #print dictionary
     #print map_verb_dependencies('data_result/334701.txt.xml', dictionary)
 
-    
+    '''
     #generating training files for Part 6.2
     txt_dir = 'data'
     xml_dir = 'data_result'
@@ -419,7 +419,7 @@ def main():
     os.system('svm-train -t 0 train_4_postags.txt 4_model.model')
     os.system('svm-train -t 0 train_5_dependency.txt 5_model.model')
     os.system('svm-train -t 0 train_6_all.txt 6_model.model')
-    '''
+    
     '''
     #generating testing files for Part 6.3
     txt_dir = 'test_data'
