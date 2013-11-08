@@ -526,13 +526,13 @@ def main():
     print compute_performance('test_5_dependency.txt', '5_result')
     print compute_performance('test_6_all.txt', '6_result')
     
-    '''
+    
     #Part 7 calculations
     process_corpus('data', 'data_result', 7)
     os.system('svm-train -t 0 train_7_own.txt 7_model.model')
     process_corpus('test_data', 'test_data_result', 7)
     os.system('svm-predict test_7_own.txt 7_model.model 7_result')
-    '''
+    
     print compute_performance('test_7_own.txt', '7_result')
     
     
