@@ -210,7 +210,7 @@ def map_verbs(xml_filename, verb_list):
 
 # This is for part 7
 def map_nouns(xml_filename, noun_list):
-    verbs = extract_nouns(xml_filename)
+    nouns = extract_nouns(xml_filename)
     return [1 if t in nouns else 0 for t in noun_list]
 
 def extract_verb_dependencies(xml_path):
@@ -371,6 +371,17 @@ def process_corpus(txt_dir, xml_dir, feature_mode):
                 label = 1
             write_features(f, label, v)
 
+    elif feature_mode == 7:
+        f = open(flag + '_7_own.txt', 'w')
+        noun_list = extract_nouns(xml_dir)
+        for file in get_all_files(xml_dir):
+            v = map_nouns(xml_dir + '/' + file, noun_list)
+            if file in lowd:
+                label = -1
+            else:
+                label = 1
+            write_features(f, label, v)
+
 def compute_performance(test_file, output_file):
     pass
 
@@ -383,6 +394,14 @@ Accuracy = 56% (56/100) (classification)
 Accuracy = 51% (51/100) (classification)
 Accuracy = 53% (53/100) (classification)
 
+For lower case:???? !!!!
+Accuracy = 46% (46/100) (classification)
+Accuracy = 50% (50/100) (classification)
+Accuracy = 50% (50/100) (classification)
+Accuracy = 47% (47/100) (classification)
+Accuracy = 45% (45/100) (classification)
+Accuracy = 47% (47/100) (classification)
+
 Files and what they are:
 
 #_model.model: these files are the regression models we generate from the training data
@@ -391,16 +410,34 @@ test_#_...txt: these are the formatted features of the test data (test_file)
 train_#_...txt: these are the formatted features of the training data files
 
 '''
+
+'''
+Part 7
+
+We added the functions extract_nouns and map_nouns which uses nouns as 
+features. The intuition here is that certain nouns such as 'process,' 
+'improvement,' etc. are positive and hence should lead to positive stock
+reaction. Furthermore, many capital structure changes are correlated with
+stock movements. Investors like 'share buyback,' 'dividends,' and 'spin-offs'
+but generally dislike 'acquisition' or 'issuance' of debt or stock. Hence
+by extracting nouns we should see these features correlate with stock movements.
+
+
+
+'''
             
 def main():
     #test functions for Part 1 & 2
     #top_words = extract_top_words('/home1/c/cis530/hw3/data')
+    #print top_words
     #print unigram_map_entry('/home1/c/cis530/hw3/data/6285515.txt', top_words)
     #dic = get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')
+    #print dic
     #print get_mpqa_features('/home1/c/cis530/hw3/data/6285515.txt', dic)
     #print get_mpqa_features_wordtype('/home1/c/cis530/hw3/data/6285515.txt', dic)
     #print get_mpqa_lexicon('/home1/c/cis530/hw3/mpqa-lexicon/subjclueslen1-HLTEMNLP05.tff')['mean']
     #gi_dict = get_geninq_lexicon('/home1/c/cis530/hw3/gi-lexicon/inquirerTags.txt')
+    #print gi_dict
     #print gi_dict["make"]
     #print gi_dict["malady"]
     #print get_geninq_features('data/2067818.txt', gi_dict)
@@ -428,8 +465,8 @@ def main():
     process_corpus(txt_dir, xml_dir, 4)
     process_corpus(txt_dir, xml_dir, 5)
     process_corpus(txt_dir, xml_dir, 6)
-    '''
-    '''
+    
+    
     #call on svm to train files
     #we use -t 0 to change training into a linear model
     os.system('svm-train -t 0 train_1_lexical.txt 1_model.model')
@@ -438,8 +475,8 @@ def main():
     os.system('svm-train -t 0 train_4_postags.txt 4_model.model')
     os.system('svm-train -t 0 train_5_dependency.txt 5_model.model')
     os.system('svm-train -t 0 train_6_all.txt 6_model.model')
-    '''
-    '''
+    
+    
     #generating testing files for Part 6.3
     txt_dir = 'test_data'
     xml_dir = 'test_data_result'
@@ -449,8 +486,8 @@ def main():
     process_corpus(txt_dir, xml_dir, 4)
     process_corpus(txt_dir, xml_dir, 5)
     process_corpus(txt_dir, xml_dir, 6)
-    '''
-    '''
+    
+    
     #call on svm to predict files
     os.system('svm-predict test_1_lexical.txt 1_model.model 1_result')
     os.system('svm-predict test_2_sentiment.txt 2_model.model 2_result')
@@ -466,6 +503,12 @@ def main():
 
 
     '''
+    #Part 7 calculations
+    process_corpus('data', 'data_result', 7)
+    os.system('svm-train -t 0 train_7_own.txt 7_model.model')
+    process_corpus('test_data', 'test_data_result', 7)
+    os.system('svm-predict test_7_own.txt 7_model.model 7_result')
+
     #finds invalid xml files
     '''
     xml_dir = 'data_result'
