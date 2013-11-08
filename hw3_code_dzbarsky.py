@@ -375,7 +375,7 @@ def process_corpus(txt_dir, xml_dir, feature_mode):
         noun_list = extract_nouns(xml_dir)
         for file in get_all_files(xml_dir):
             v = map_nouns(xml_dir + '/' + file, noun_list)
-            if file in lowd:
+            if file[:file.find('.xml')] in lowd:
                 label = -1
             else:
                 label = 1
