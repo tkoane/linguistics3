@@ -392,7 +392,7 @@ def compute_performance(test_file, output_file):
     output_lines = open(output_file).readlines()
     for i in range(len(test_lines)):
         test = int(word_tokenize(test_lines[i])[0])
-        result = int(word_tokenize(test_lines[i])[0])
+        result = int(word_tokenize(output_lines[i])[0])
         if test == result:
             if test == 1:
                 intersect_high += 1
@@ -422,28 +422,12 @@ def compute_performance(test_file, output_file):
     return (pos_pres, pos_recall, pos_f_measure, neg_pres, neg_recall, neg_f_measure)
 
 '''
-Accuracy for models 1 - 6:
-Accuracy = 47% (47/100) (classification)
-Accuracy = 50% (50/100) (classification)
-Accuracy = 50% (50/100) (classification)
-Accuracy = 56% (56/100) (classification)
-Accuracy = 51% (51/100) (classification)
-Accuracy = 53% (53/100) (classification)
+Part 6.3
 
-For lower case:???? !!!!
-Accuracy = 46% (46/100) (classification)
-Accuracy = 50% (50/100) (classification)
-Accuracy = 50% (50/100) (classification)
-Accuracy = 47% (47/100) (classification)
-Accuracy = 45% (45/100) (classification)
-Accuracy = 47% (47/100) (classification)
+Here are our results of precision, recall, and f measure with respect to
+the different models:
 
-Files and what they are:
 
-#_model.model: these files are the regression models we generate from the training data
-#_result: these are the prediction files (output_file) that we generate from the models (on the test data)
-test_#_...txt: these are the formatted features of the test data (test_file)
-train_#_...txt: these are the formatted features of the training data files
 
 '''
 
@@ -536,20 +520,21 @@ def main():
     
     #computes precision, recall and f-score
     print compute_performance('test_1_lexical.txt', '1_result')
-    print compute_performance('test_2_sentiment.txt', '2_result')
-    print compute_performance('test_3_named_entity.txt', '3_result')
-    print compute_performance('test_4_postags.txt', '4_result')
-    print compute_performance('test_5_dependency.txt', '5_result')
-    print compute_performance('test_6_all.txt', '6_result')
+    #print compute_performance('test_2_sentiment.txt', '2_result')
+    #print compute_performance('test_3_named_entity.txt', '3_result')
+    #print compute_performance('test_4_postags.txt', '4_result')
+    #print compute_performance('test_5_dependency.txt', '5_result')
+    #print compute_performance('test_6_all.txt', '6_result')
     
-
+    '''
     #Part 7 calculations
     process_corpus('data', 'data_result', 7)
     os.system('svm-train -t 0 train_7_own.txt 7_model.model')
     process_corpus('test_data', 'test_data_result', 7)
     os.system('svm-predict test_7_own.txt 7_model.model 7_result')
     print compute_performance('test_7_own.txt', '7_result')
-
+    '''
+    
     #finds invalid xml files
     '''
     xml_dir = 'data_result'
