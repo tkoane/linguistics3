@@ -30,9 +30,9 @@ def get_all_files(directory):
 def load_file_sentences(filepath):
     index = filepath.rfind('/')
     if index < 0:
-        sents = sent_tokenize(PlaintextCorpusReader('.', filepath).raw())
+        sents = sent_tokenize(PlaintextCorpusReader('.', filepath).raw().lower())
     else:
-        sents = sent_tokenize(PlaintextCorpusReader(filepath[:index], filepath[index+1:]).raw())
+        sents = sent_tokenize(PlaintextCorpusReader(filepath[:index], filepath[index+1:]).raw().lower())
     return sents
 
 def load_file_tokens(filepath):
@@ -79,7 +79,7 @@ def get_mpqa_lexicon(lexicon_path):
     for line in open(lexicon_path):
       type = line[5:line.find(' ')]
       line = line[line.find('word1'):]
-      word = line[6:line.find(' ')]
+      word = line[6:line.find(' ')].lower()
       line = line[line.find('polarity'):]
       polarity = line[9:line.find(' ')]
       if word not in words:
@@ -127,7 +127,7 @@ def get_mpqa_features_wordtype(file, dictionary):
 def get_geninq_lexicon(lexicon_path):
     words = dict()
     for line in open(lexicon_path):
-        word = line[:line.find('\t')]
+        word = line[:line.find('\t')].lower()
         positive = 1 if (line.find('Pstv') is not -1 or line.find('Pos') is not -1) else 0
         negative = 1 if (line.find('Ngtv') is not -1 or line.find('Neg') is not -1) else 0
         strong = 1 if line.find('Strng') is not -1 else 0
@@ -185,7 +185,7 @@ def extract_pos(training_xml_path, pos_list):
             tree = ElementTree.parse(path)
             for token in tree.getroot().iter('token'):
                 if token.find('POS').text in pos_list:
-                    words.append(token.find('word').text)
+                    words.append(token.find('word').text.lower())
         except:
             pass
     return list(set(words))
@@ -228,7 +228,7 @@ def extract_verb_dependencies(xml_path):
                 for dep in basic_dep.findall('dep'):
                     name = dep.get('type')
                     if name in verb_deps:
-                        t = (name, dep.find('governor').text, dep.find('dependent').text)
+                        t = (name, dep.find('governor').text.lower(), dep.find('dependent').text.lower())
                         if t in dep_dict.keys():
                             dep_dict[t] += 1
                         else:
@@ -248,7 +248,7 @@ def map_verb_dependencies(xml_filename, dependency_list):
         for basic_dep in tree.getroot().iter('basic-dependencies'):
             for dep in basic_dep.findall('dep'):
                 try:
-                    t = (dep.get('type'), dep.find('governor').text, dep.find('dependent').text)
+                    t = (dep.get('type'), dep.find('governor').text.lower(), dep.find('dependent').text.lower())
                     i = dependency_list.index(t)
                     array[i] += 1
                 except:
