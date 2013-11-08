@@ -520,11 +520,11 @@ def main():
     
     #computes precision, recall and f-score
     print compute_performance('test_1_lexical.txt', '1_result')
-    #print compute_performance('test_2_sentiment.txt', '2_result')
-    #print compute_performance('test_3_named_entity.txt', '3_result')
-    #print compute_performance('test_4_postags.txt', '4_result')
-    #print compute_performance('test_5_dependency.txt', '5_result')
-    #print compute_performance('test_6_all.txt', '6_result')
+    print compute_performance('test_2_sentiment.txt', '2_result')
+    print compute_performance('test_3_named_entity.txt', '3_result')
+    print compute_performance('test_4_postags.txt', '4_result')
+    print compute_performance('test_5_dependency.txt', '5_result')
+    print compute_performance('test_6_all.txt', '6_result')
     
     '''
     #Part 7 calculations
@@ -532,8 +532,9 @@ def main():
     os.system('svm-train -t 0 train_7_own.txt 7_model.model')
     process_corpus('test_data', 'test_data_result', 7)
     os.system('svm-predict test_7_own.txt 7_model.model 7_result')
-    print compute_performance('test_7_own.txt', '7_result')
     '''
+    print compute_performance('test_7_own.txt', '7_result')
+    
     
     #finds invalid xml files
     '''
