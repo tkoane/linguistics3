@@ -426,8 +426,14 @@ Part 6.3
 
 Here are our results of precision, recall, and f measure with respect to
 the different models:
+(0.476, 0.78, 0.591, 0.389, 0.14, 0.206) - Lexical
+(0.5, 1.0, 0.667, 'infinity', 0.0, 'NA') - Sentiment
+(0.5, 1.0, 0.667, 'infinity', 0.0, 'NA') - Named Entity
+(0.457, 0.32, 0.376, 0.477, 0.62, 0.539) - POS Tags Adj and Verbs
+(0.468, 0.74, 0.574, 0.381, 0.16, 0.225) - Dependency
+(0.478, 0.66, 0.555, 0.452, 0.28, 0.346) - Combined
 
-
+(0.521, 0.74, 0.612, 0.552, 0.32, 0.405) - Our Own Features
 
 '''
 
@@ -442,7 +448,8 @@ stock movements. Investors like 'share buyback,' 'dividends,' and 'spin-offs'
 but generally dislike 'acquisition' or 'issuance' of debt or stock. Hence
 by extracting nouns we should see these features correlate with stock movements.
 
-
+The performance of our model turned out very well. See above for precision,
+recall, and f measures.
 
 '''
             
@@ -515,18 +522,18 @@ def main():
     os.system('svm-predict test_4_postags.txt 4_model.model 4_result')
     os.system('svm-predict test_5_dependency.txt 5_model.model 5_result')
     os.system('svm-predict test_6_all.txt 6_model.model 6_result')
-    '''
+    
 
     
     #computes precision, recall and f-score
     print compute_performance('test_1_lexical.txt', '1_result')
-    #print compute_performance('test_2_sentiment.txt', '2_result')
-    #print compute_performance('test_3_named_entity.txt', '3_result')
-    #print compute_performance('test_4_postags.txt', '4_result')
-    #print compute_performance('test_5_dependency.txt', '5_result')
-    #print compute_performance('test_6_all.txt', '6_result')
+    print compute_performance('test_2_sentiment.txt', '2_result')
+    print compute_performance('test_3_named_entity.txt', '3_result')
+    print compute_performance('test_4_postags.txt', '4_result')
+    print compute_performance('test_5_dependency.txt', '5_result')
+    print compute_performance('test_6_all.txt', '6_result')
     
-    '''
+    
     #Part 7 calculations
     process_corpus('data', 'data_result', 7)
     os.system('svm-train -t 0 train_7_own.txt 7_model.model')
@@ -534,17 +541,6 @@ def main():
     os.system('svm-predict test_7_own.txt 7_model.model 7_result')
     print compute_performance('test_7_own.txt', '7_result')
     '''
-    
-    #finds invalid xml files
-    '''
-    xml_dir = 'data_result'
-    for file in get_all_files(xml_dir):
-        try:
-            tree = ET.parse(xml_dir + '/' + file)
-        except Exception as e:
-            print e
-            print file
-   '''
 
 if __name__ == "__main__":
     main()
