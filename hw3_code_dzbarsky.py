@@ -3,8 +3,6 @@
 
 from nltk.corpus import PlaintextCorpusReader
 from nltk.tokenize import sent_tokenize, word_tokenize
-from nltk.stem.porter import PorterStemmer
-from xml.etree import ElementTree
 import math
 import string
 import random
@@ -182,7 +180,7 @@ def extract_pos(training_xml_path, pos_list):
 
     for path in paths:
         try:
-            tree = ElementTree.parse(path)
+            tree = ET.parse(path)
             for token in tree.getroot().iter('token'):
                 if token.find('POS').text in pos_list:
                     words.append(token.find('word').text.lower())
@@ -217,13 +215,14 @@ def extract_verb_dependencies(xml_path):
     dep_dict = dict()
     #finds the list of verb dependencies
     verb_deps = load_file_tokens('/home1/c/cis530/hw3/verb_deps.txt')
+    print verb_deps
     if xml_path.find('.xml') is not -1:
         paths = [xml_path]
     else:
         paths = [xml_path + '/' + file for file in get_all_files(xml_path)]
     for path in paths:
         try:
-            tree = ElementTree.parse(path)
+            tree = ET.parse(path)
             for basic_dep in tree.getroot().iter('basic-dependencies'):
                 for dep in basic_dep.findall('dep'):
                     name = dep.get('type')
@@ -244,7 +243,7 @@ def extract_verb_dependencies(xml_path):
 def map_verb_dependencies(xml_filename, dependency_list):
     array = [0] * len(dependency_list)
     try:
-        tree = ElementTree.parse(xml_filename)
+        tree = ET.parse(xml_filename)
         for basic_dep in tree.getroot().iter('basic-dependencies'):
             for dep in basic_dep.findall('dep'):
                 try:
@@ -372,7 +371,44 @@ def process_corpus(txt_dir, xml_dir, feature_mode):
             write_features(f, label, v)
 
 def compute_performance(test_file, output_file):
-    pass
+    results_high = 0
+    results_low = 0
+    tests_high = 0
+    tests_low = 0
+    intersect_high = 0
+    intersect_low = 0
+    test_lines = open(test_file).readlines()
+    output_lines = open(output_file).readlines()
+    for i in range(len(test_lines)):
+        test = int(word_tokenize(test_lines[i])[0])
+        result = int(word_tokenize(test_lines[i])[0])
+        if test == result:
+            if test == 1:
+                intersect_high += 1
+            else:
+                intersect_low += 1
+        if test == -1:
+            tests_low += 1
+        elif test == 1:
+            tests_high += 1
+        if result == -1:
+            results_low += 1
+        elif result == 1:
+            results_high += 1
+    pos_pres = intersect_high/float(results_high) if results_high > 0 else 'infinity'
+    pos_recall = intersect_high/float(tests_high) if tests_high > 0 else 'infinity'
+    if results_high > 0 and tests_high > 0:
+        pos_f_measure = 2 * pos_pres * pos_recall / (pos_pres + pos_recall)
+    else:
+        pos_f_measure = 'NA'
+    neg_pres = intersect_low/float(results_low) if results_low > 0 else 'infinity'
+    neg_recall = intersect_low/float(tests_low) if tests_low > 0 else 'infinity'
+    if results_low > 0 and tests_low > 0:
+        neg_f_measure = 2 * neg_pres * neg_recall / (neg_pres + neg_recall)
+    else:
+        neg_f_measure = 'NA'
+
+    return (pos_pres, pos_recall, pos_f_measure, neg_pres, neg_recall, neg_f_measure)
 
 '''
 Accuracy for models 1 - 6:
@@ -460,18 +496,22 @@ def main():
     os.system('svm-predict test_6_all.txt 6_model.model 6_result')
     '''
 
-    '''
-    #computes precision, recall and f-score
     
-
-
-    '''
+    #computes precision, recall and f-score
+    print compute_performance('test_1_lexical.txt', '1_result')
+    print compute_performance('test_2_sentiment.txt', '2_result')
+    print compute_performance('test_3_named_entity.txt', '3_result')
+    print compute_performance('test_4_postags.txt', '4_result')
+    print compute_performance('test_5_dependency.txt', '5_result')
+    print compute_performance('test_6_all.txt', '6_result')
+    print compute_performance('test_7_own.txt', '7_result')
+    
     #finds invalid xml files
     '''
     xml_dir = 'data_result'
     for file in get_all_files(xml_dir):
         try:
-            tree = ElementTree.parse(xml_dir + '/' + file)
+            tree = ET.parse(xml_dir + '/' + file)
         except Exception as e:
             print e
             print file
