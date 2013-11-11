@@ -476,7 +476,7 @@ the different models:
 (0.468, 0.74, 0.574, 0.381, 0.16, 0.225) - Dependency
 (0.478, 0.66, 0.555, 0.452, 0.28, 0.346) - Combined
 
-(0.521, 0.74, 0.612, 0.552, 0.32, 0.405) - Our Own Features
+(0.512, 0.88, 0.647, 0.571, 0.16, 0.25) - Our Own Features
 
 '''
 
@@ -532,7 +532,7 @@ def main():
     #print dictionary
     #print map_verb_dependencies('data_result/334701.txt.xml', dictionary)
 
-    '''
+    
     #generating training files for Part 6.2
     txt_dir = 'data'
     xml_dir = 'data_result'
@@ -582,7 +582,7 @@ def main():
     print compute_performance('test_4_postags.txt', '4_result')
     print compute_performance('test_5_dependency.txt', '5_result')
     print compute_performance('test_6_all.txt', '6_result')
-    '''
+    
     #Part 7 calculations
     process_corpus('data', 'data_result', 7)
     os.system('svm-train -t 0 train_7_own.txt 7_model.model')
