@@ -215,7 +215,6 @@ def extract_verb_dependencies(xml_path):
     dep_dict = dict()
     #finds the list of verb dependencies
     verb_deps = load_file_tokens('/home1/c/cis530/hw3/verb_deps.txt')
-    print verb_deps
     if xml_path.find('.xml') is not -1:
         paths = [xml_path]
     else:
@@ -275,6 +274,48 @@ def get_files_listed(corpusroot, filelist):
         i += 2
 
     return (lowd, highd)
+
+#Part 7: Second Feature: All Dependencies
+def extract_all_dependencies(xml_path):
+    dep_dict = dict()
+    if xml_path.find('.xml') is not -1:
+        paths = [xml_path]
+    else:
+        paths = [xml_path + '/' + file for file in get_all_files(xml_path)]
+    for path in paths:
+        try:
+            tree = ET.parse(path)
+            for basic_dep in tree.getroot().iter('basic-dependencies'):
+                for dep in basic_dep.findall('dep'):
+                    t = (dep.get('type'), dep.find('governor').text.lower(), dep.find('dependent').text.lower())
+                    if t in dep_dict.keys():
+                        dep_dict[t] += 1
+                    else:
+                        dep_dict[t] = 1
+        except:
+           pass
+    dep_list = []
+    for dep in dep_dict.keys():
+        if dep_dict[dep] >= 5:
+            dep_list.append(dep)
+    return dep_list
+
+def map_all_dependencies(xml_filename, dependency_list):
+    array = [0] * len(dependency_list)
+    try:
+        tree = ET.parse(xml_filename)
+        for basic_dep in tree.getroot().iter('basic-dependencies'):
+            for dep in basic_dep.findall('dep'):
+                try:
+                    t = (dep.get('type'), dep.find('governor').text.lower(), dep.find('dependent').text.lower())
+                    i = dependency_list.index(t)
+                    array[i] += 1
+                except:
+                    pass
+    except:
+        pass
+    return array
+#End of Part 7 Implementation
 
 def write_features(f, label, v):
     f.write(str(label))
@@ -373,8 +414,10 @@ def process_corpus(txt_dir, xml_dir, feature_mode):
     elif feature_mode == 7:
         f = open(flag + '_7_own.txt', 'w')
         noun_list = extract_nouns(xml_dir)
+        dependency_list = extract_all_dependencies(xml_dir)
         for file in get_all_files(xml_dir):
             v = map_nouns(xml_dir + '/' + file, noun_list)
+            v.extend(map_all_dependencies(xml_dir + '/' + file, dependency_list))
             if file[:file.find('.xml')] in lowd:
                 label = -1
             else:
@@ -440,13 +483,20 @@ the different models:
 '''
 Part 7
 
-We added the functions extract_nouns and map_nouns which uses nouns as 
+We used two combined feature groups to implement Part 7.
+
+First, we added the functions extract_nouns and map_nouns which uses nouns as 
 features. The intuition here is that certain nouns such as 'process,' 
 'improvement,' etc. are positive and hence should lead to positive stock
 reaction. Furthermore, many capital structure changes are correlated with
 stock movements. Investors like 'share buyback,' 'dividends,' and 'spin-offs'
 but generally dislike 'acquisition' or 'issuance' of debt or stock. Hence
 by extracting nouns we should see these features correlate with stock movements.
+
+Second, we added the functions extract_all_dependencies and map_all_dependencies
+which maps all the basic dependencies (as opposed just the verb ones). We feel 
+that simply having verb dependencies may be missing valuable information with
+regards to dependencies and including all of them should improve our results.
 
 The performance of our model turned out very well. See above for precision,
 recall, and f measures.
@@ -532,14 +582,14 @@ def main():
     print compute_performance('test_4_postags.txt', '4_result')
     print compute_performance('test_5_dependency.txt', '5_result')
     print compute_performance('test_6_all.txt', '6_result')
-    
+    '''
     #Part 7 calculations
     process_corpus('data', 'data_result', 7)
     os.system('svm-train -t 0 train_7_own.txt 7_model.model')
     process_corpus('test_data', 'test_data_result', 7)
     os.system('svm-predict test_7_own.txt 7_model.model 7_result')
     print compute_performance('test_7_own.txt', '7_result')
-    '''
+    
 
 
 if __name__ == "__main__":
